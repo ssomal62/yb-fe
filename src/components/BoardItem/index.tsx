@@ -1,9 +1,10 @@
 import React from "react";
 import './style.css'
-import { BoardListItem } from "../../types/interface";
-import { useNavigate } from "react-router-dom";
+import {BoardListItem} from "../../types/interface";
+import {useNavigate} from "react-router-dom";
 import defaultProfileImage from 'assets/image/default-profile-image.png'
 import {BOARD_DETAIL_PATH, BOARD_PATH} from "../../constant";
+import {AiOutlineComment, AiOutlineEye, AiOutlineLike} from "react-icons/ai";
 
 interface Props {
     boardListItem: BoardListItem;
@@ -13,7 +14,7 @@ export default function BoardItem({ boardListItem }: Props) {
 
     const { boardNumber, title, content, boardTitleImage } = boardListItem;
     const { favoriteCount, commentCount, viewCount } = boardListItem;
-    const { writeDatetime, writerNickname, writerProfileImage } = boardListItem;
+    const { writeDateTime, writerNickname, writerProfileImage } = boardListItem;
 
     const navigate = useNavigate();
 
@@ -32,7 +33,7 @@ export default function BoardItem({ boardListItem }: Props) {
                     </div>
                     <div className='board-list-item-write-box'>
                         <div className='board-list-item-nickname'>{writerNickname}</div>
-                        <div className='board-list-item-write-date'>{writeDatetime}</div>
+                        <div className='board-list-item-write-date'>{writeDateTime}</div>
                     </div>
                 </div>
                 <div className='board-list-item-middle'>
@@ -41,7 +42,15 @@ export default function BoardItem({ boardListItem }: Props) {
                 </div>
                 <div className='board-list-item-bottom'>
                     <div className='board-list-item-counts'>
-                        {`댓글 ${commentCount} · 좋아요 ${favoriteCount} · 조회수 ${viewCount}`}
+                        <div className='board-list-item-counts-content'>
+                            <AiOutlineComment className='mr-2'/> {commentCount}
+                        </div>
+                        <div className='board-list-item-counts-content'>
+                            <AiOutlineLike className='mr-2' /> {favoriteCount}
+                        </div>
+                        <div className='board-list-item-counts-content'>
+                            <AiOutlineEye className='mr-2' /> {viewCount}
+                        </div>
                     </div>
                 </div>
             </div>
