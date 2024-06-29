@@ -3,7 +3,7 @@ import './style.css'
 import Top3Item from "../../components/Top3Item";
 import {BoardListItem} from "../../types/interface";
 import BoardItem from "../../components/BoardItem";
-import Pagination from "../../components/Pagination";
+import PaginationComponent from "../../components/Pagination";
 import {useNavigate} from "react-router-dom";
 import {SEARCH_PATH} from "../../constant";
 import {getLatestBoardListRequest, getPopularListRequest, getTop3BoardListRequest} from "../../apis";
@@ -11,6 +11,7 @@ import {GetLatestBoardLiseResponseDto, GetTop3BoardListResponseDto} from "../../
 import {ResponseDto} from "../../apis/response";
 import {usePaginaion} from "../../hooks";
 import {GetPopularListResponseDto} from "../../apis/response/search";
+import {Button} from "@nextui-org/react";
 
 export default function Main() {
 
@@ -65,6 +66,11 @@ export default function Main() {
             setTotalList
         } = usePaginaion<BoardListItem>(5);
 
+        const onPageChange = (page:number) => {
+            setCurrentPage(page);
+            console.log('Page changed to:', page);
+        };
+
         const [currentBoardList, setCurrentBoardList] = useState<BoardListItem[]>([]);
         const [popularWordList, setPopularWordList] = useState<string[]>([]);
 
@@ -111,10 +117,11 @@ export default function Main() {
                             <div className="main-bottom-popular-card">
                                 <div className="main-bottom-popular-card-box">
                                     <div className="main-bottom-popular-card-container">
-                                        <div className="main-bottom-popular-card-title">{'인기 검색어'}</div>
+                                        <div className="main-bottom-popular-card-title">인기 검색어</div>
                                         <div className="main-bottom-popular-card-contents">
                                             {popularWordList.map((word, index) =>
-                                                <div key={index} className="word-badge" onClick={() => onPupularWordClickHandler(word)}>{word}</div>)}
+                                                <Button key={index} color='warning' variant='flat' onClick={() => onPupularWordClickHandler(word)}>{word}</Button>
+                                            )}
                                         </div>
                                     </div>
                                 </div>
@@ -122,13 +129,14 @@ export default function Main() {
                         </div>
                     </div>
                     <div className="main-bottom-pagination-box">
-                        <Pagination
+                        <PaginationComponent
                             currentPage={currentPage}
                             currentSection={currentSection}
                             setCurrentPage={setCurrentPage}
                             setCurrentSection={setCurrentSection}
                             viewPageList={viewPageList}
                             totalSection={totalSection}
+                            onPageChange={onPageChange}
                         />
                     </div>
                 </div>

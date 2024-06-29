@@ -18,7 +18,7 @@ import {ResponseDto} from "../../apis/response";
 import {PatchNicknameRequestDto, PatchProfileImageRequestDto} from "../../apis/request/user";
 import {useCookies} from "react-cookie";
 import {usePaginaion} from "../../hooks";
-import Pagination from "../../components/Pagination";
+import PaginationComponent from "../../components/Pagination";
 import {GetUserBoardListResponseDto} from "../../apis/response/board";
 
 export default function UserPage() {
@@ -110,6 +110,7 @@ export default function UserPage() {
             getUserRequest(userEmail).then(getUserResponse);
             seteNicknameChange(false);
         }
+
         const getUserResponse = (responseBody: GetUserResponseDto | ResponseDto | null) => {
             if (!responseBody) return;
 
@@ -200,6 +201,10 @@ export default function UserPage() {
             setTotalList
         } = usePaginaion<BoardListItem>(5);
 
+        const onPageChange = (page:number) => {
+            setCurrentPage(page);
+        };
+
         const onSideCardClickHandler = () => {
             if (isMyPage) navigate(BOARD_PATH() + '/' + BOARD_WRITE_PATH());
             else if (loginUser) {
@@ -270,12 +275,13 @@ export default function UserPage() {
                     </div>
                     <div className='user-bottom-pagination-box'>
                         {count !== 0 &&
-                            <Pagination
+                            <PaginationComponent
                                 currentPage={currentPage}
                                 currentSection={currentSection}
                                 setCurrentPage={setCurrentPage}
                                 setCurrentSection={setCurrentSection}
                                 viewPageList={viewPageList}
+                                onPageChange={onPageChange}
                                 totalSection={totalSection}
                             />
                         }

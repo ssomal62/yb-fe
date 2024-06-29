@@ -3,7 +3,7 @@ import './style.css'
 import FavoriteItem from "../../../components/FavoriteItem";
 import {Board, CommentListItem, FavoriteListItem} from "../../../types/interface";
 import CommentItem from "../../../components/CommentItem";
-import Pagination from "../../../components/Pagination";
+import PaginationComponent from "../../../components/Pagination";
 import defaultProfileImage from 'assets/image/default-profile-image.png'
 import {useLoginUserStore} from "../../../stores";
 import {useNavigate, useParams} from "react-router-dom";
@@ -13,7 +13,8 @@ import {
     getBoardRequest,
     getCommentListRequest,
     getFavoriteListRequest,
-    increaseViewCount, postCommentRequest,
+    increaseViewCount,
+    postCommentRequest,
     putFavoriteRequest
 } from "../../../apis";
 import GetBoardResponseDto from "../../../apis/response/board/get-board.response.dto";
@@ -22,7 +23,9 @@ import {
     DeleteBoardResponseDto,
     GetCommentListResponseDto,
     GetFavoriteListResponseDto,
-    IncreaseViewCountResponseDto, PostCommentReponseDto, PutFavoriteResponseDto
+    IncreaseViewCountResponseDto,
+    PostCommentReponseDto,
+    PutFavoriteResponseDto
 } from "../../../apis/response/board";
 import dayjs from "dayjs";
 import {useCookies} from "react-cookie";
@@ -166,6 +169,10 @@ export default function BoardDetail() {
             ,viewList,viewPageList,totalSection
             ,setCurrentPage ,setCurrentSection,setTotalList
         } = usePaginaion<CommentListItem>(4)
+
+        const onPageChange = (page:number) => {
+            setCurrentPage(page);
+        };
 
         // const [commentList, setCommentList] = useState<CommentListItem[]>([]);
 
@@ -325,12 +332,13 @@ export default function BoardDetail() {
                     </div>
                     <div className='divider'></div>
                     <div className='board-detail-bottom-comment-pagination-box'>
-                        <Pagination
+                        <PaginationComponent
                             currentPage={currentPage}
                             currentSection={currentSection}
                             setCurrentPage={setCurrentPage}
                             setCurrentSection={setCurrentSection}
                             viewPageList={viewPageList}
+                            onPageChange={onPageChange}
                             totalSection={totalSection}
                         />
                     </div>

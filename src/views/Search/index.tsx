@@ -8,8 +8,9 @@ import {getRelationListRequest, getSearchBoardListRequest} from "../../apis";
 import {GetSearchBoardListResponseDto} from "../../apis/response/board";
 import {ResponseDto} from "../../apis/response";
 import {usePaginaion} from "../../hooks";
-import Pagination from "../../components/Pagination";
+import PaginationComponent from "../../components/Pagination";
 import {GetRelationListResponseDto} from "../../apis/response/search";
+import {Button} from "@nextui-org/react";
 
 export default function Search() {
 
@@ -25,6 +26,10 @@ export default function Search() {
         totalSection,
         setTotalList
     } = usePaginaion<BoardListItem>(5);
+
+    const onPageChange = (page:number) => {
+        setCurrentPage(page);
+    };
 
     const [preSearchWord, setPreSearchWord] = useState<string | null>(null);
     const [count, setCount] = useState<number>(0);
@@ -99,8 +104,8 @@ export default function Search() {
                                     :
                                     <div className="search-relation-card-contents">
                                         {relationWordList.map((word, index) =>
-                                            <div key={index} className="word-badge"
-                                                 onClick={() => onRelationWordClickHandler(word)}>{word}</div>)}
+                                            <Button key={index} color='warning' variant='flat'
+                                                    onClick={() => onRelationWordClickHandler(word)}>{word}</Button>)}
                                     </div>
                                 }
                             </div>
@@ -109,12 +114,13 @@ export default function Search() {
                 </div>
                 <div className="search-pagination-box">
                     {count !== 0 &&
-                        <Pagination
+                        <PaginationComponent
                             currentPage={currentPage}
                             currentSection={currentSection}
                             setCurrentPage={setCurrentPage}
                             setCurrentSection={setCurrentSection}
                             viewPageList={viewPageList}
+                            onPageChange={onPageChange}
                             totalSection={totalSection}
                         />
                     }
