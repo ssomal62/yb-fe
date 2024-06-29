@@ -1,20 +1,20 @@
-import React, {Dispatch, SetStateAction} from "react";
+import React, {Dispatch, SetStateAction, useEffect, useState} from "react";
 import './style.css'
-
+import {Pagination} from "@nextui-org/react";
 interface Props {
     currentPage: number;
     currentSection: number;
     setCurrentPage: Dispatch<SetStateAction<number>>;
     setCurrentSection: Dispatch<SetStateAction<number>>;
-
+    onPageChange: (page: number) => void;
     viewPageList: number[];
     totalSection: number;
 }
-export default function Pagination(props: Props) {
+export default function PaginationComponent(props: Props) {
 
     const { currentPage, currentSection, viewPageList , totalSection } = props;
-    const { setCurrentPage, setCurrentSection } = props;
-
+    const { setCurrentPage, setCurrentSection , onPageChange} = props;
+    const [page, setPage] = useState<number>(currentPage);
     const onPageClickHandler = (page: number) => {
         setCurrentPage(page);
     }
@@ -31,31 +31,22 @@ export default function Pagination(props: Props) {
         setCurrentSection(currentSection + 1);
     }
 
+    const handlePageChange = (page:number) => {
+        setPage(page);
+        onPageChange(page);
+        window.scrollTo({ top: 878, behavior: 'smooth' });
+    }
+
     return(
         <div id='pagination-wrapper'>
-            <div className='pagination-change-link-box'>
-                <div className='icon-box-small'>
-                    <div className='icon expand-left-icon'></div>
-                </div>
-                <div className='pagination-change-link-text' onClick={onPreviousClickHandler}>{'이전'}</div>
-            </div>
-            <div className='pagination-divider'>{'\|'}</div>
-
-            {viewPageList.map((page, index) =>
-                page === currentPage ?
-                    <div key={index} className='pagination-text-active'>{page}</div>
-                    :
-                    <div key={index} className='pagination-text' onClick={() => onPageClickHandler(page)}>{page}</div>
-            )}
-
-            <div className='pagination-divider'>{'\|'}</div>
-            <div className='pagination-change-link-box'>
-                <div className='pagination-change-link-text' onClick={onNextClickHandler}>{'다음'}</div>
-                <div className='icon-box-small'>
-                    <div className='icon expand-right-icon'></div>
-                </div>
-            </div>
-
+            <Pagination
+                showControls
+                variant='light'
+                color="warning"
+                page={page}
+                onChange={handlePageChange}
+                total={viewPageList.length}
+            />
         </div>
     );
 }
