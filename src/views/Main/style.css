@@ -98,6 +98,7 @@
 }
 
 .main-bottom-popular-card-title {
+    display: flex;
     color: rgba(0, 0, 0, 1);
     font-size: 24px;
     font-weight: 500;
